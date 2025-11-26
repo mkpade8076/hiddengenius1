@@ -8,13 +8,15 @@
         name: httpd
         state: present
 
+    - name: Create a directory
+      ansible.builtin.file:
+        path: /home/kpademr/files/
+        state: directory
+
     - name: Configure alias
       ansible.builtin.copy:
-        src: files/alias.conf
-        dest: /etc/httpd/conf.d/alias.conf
-        owner: root
-        group: root
-        mode: "0644"
+        content: "My testing content"
+        dest: /home/kpademr/files/content
       notify: Restart webserver
 
     - name: Ensure httpd is enabled and running

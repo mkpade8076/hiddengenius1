@@ -1,0 +1,30 @@
+- name: Manage web server alias configuration
+  hosts: all
+  become: true
+
+  tasks:
+    - name: Install httpd package
+      ansible.builtin.dnf:
+        name: httpd
+        state: present
+
+    - name: Configure alias
+      ansible.builtin.copy:
+        src: files/alias.conf
+        dest: /etc/httpd/conf.d/alias.conf
+        owner: root
+        group: root
+        mode: "0644"
+      notify: Restart webserver
+
+    - name: Ensure httpd is enabled and running
+      ansible.builtin.service:
+        name: httpd
+        enabled: true
+        state: started
+
+  handlers:
+    - name: Restart webserver
+      ansible.builtin.service:
+        name: httpd
+        state: restarted

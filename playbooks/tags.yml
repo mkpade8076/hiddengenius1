@@ -1,0 +1,22 @@
+---
+
+- name: Run with The right Tags 
+  hosts: all
+  become: true
+
+  tasks:
+    - name: Run with the Blue Tag
+      ansible.builtin.copy:
+        content: "This is a blue tag test"
+        dest: /home/kpademr/bluetag
+      tags:
+        - never
+        - blue
+
+    - name:  Run with the green tag
+      ansible.builtin.copy:
+        content: "This is a green tag test"
+        dest: /home/kpademr/greentag
+      tags:
+        - never
+        - green

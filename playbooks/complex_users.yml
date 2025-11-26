@@ -1,0 +1,20 @@
+---
+
+- name: Create complex Users
+  hosts: all
+  become: true
+  vars_files:
+    - users.yml
+
+
+  tasks:
+    - name: Creating Users with the specification
+      vars:
+        password: "{{ lookup('password', './password-' ~ item.name) }}"
+      ansible.builtin.user:
+        name: "{{ item.name }}"
+        uid: "{{ item.uid }}"
+        state: present
+        password: "{{ password | password_hash('sha512') }}"
+        comment: "{{ item.first | capitalize }} {{ item.middle | capitalize }} {{ item.last | capitalize }}"
+      loop: "{{ users }}"

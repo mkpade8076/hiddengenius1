@@ -1,0 +1,11 @@
+---
+
+- name: Testing
+  hosts: all
+
+  tasks:
+    - name: Testing
+      ansible.builtin.copy:
+        content: "This is a test"
+        dest: /etc/file.test
+
